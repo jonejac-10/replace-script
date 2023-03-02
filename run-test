@@ -1,0 +1,45 @@
+#!/bin/bash
+
+if [[ $# -ne 1 ]]; then
+    echo "Usage: (setup|teardown)"
+fi
+
+if [[ $1 == "setup" ]]; then
+        if [[ -e test ]]; then
+            rm -rf test
+        fi
+
+        mkdir test
+        cd test
+        mkdir edu
+        cd edu
+        mkdir bvu
+        cd bvu
+        mkdir cs
+        cd cs
+
+        cat >DevOps.java << file1
+                public class DevOps {
+                public DevOps() {
+                }
+
+file1
+        cat >DevOpsMain.java << file2
+            public class DevOpsMain {
+            public static void main(String[] args) {
+                DevOps dev = new DevOps();
+            }
+    }
+
+file2
+
+        echo "setup complete"
+
+elif [[ $1 == "teardown" ]]; then
+        rm -rf "test"
+        echo "test removed."
+
+else
+    echo "You need to specify either setup or teardown"
+
+fi

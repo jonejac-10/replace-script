@@ -1,0 +1,36 @@
+#!/usr/bin/env python
+
+from pathlib import Path
+from sys import argv
+
+def do_replace(path, oldpattern, newpattern):
+    if path.is_dir():
+       for entry in path.iterdir():
+           do_replace(entry, oldpattern, newpattern)
+    else:
+
+        file_contents = open(path, 'r').read()
+        if oldpattern in file_contents:
+            new_contents = file_contents.replace(oldpattern, newpattern)
+            open(path, 'w').write(new_contents)
+
+        if oldpattern in path.name:
+            newname = str(path).replace(oldpattern, newpattern)
+            path.rename(newname)
+
+def print_usage():
+    print("Usage: replace <path> <oldpattern> <newpattern>")
+    exit(1)
+
+if len(argv) != 4:
+    print_usage()
+
+pathname = argv[1]
+oldpattern = argv[2]
+newpattern = argv[3]
+
+if not Path(pathname).exists():
+    print(f'{pathname} does not exist.')
+    exit(1)
+
+do_replace(Path(pathname), oldpattern, newpattern)
